@@ -25,7 +25,7 @@ x_star = np.array([
 
 x = np.zeros((2,1),dtype = np.float64)
 
-a_gd = [0.01, 0.1, 0.5]
+a_gd_list = [0.01, 0.1, 0.5]
 
 def J(x):
 
@@ -62,28 +62,66 @@ def main():
     X, Y = np.meshgrid(x_j, y_j)
     Z = 3/2*X**2 + 1/2*Y**2 - X*Y - 2*X
     
-    x_data = [x0[0][0]]
-    y_data = [x0[1][0]]
+    #x_data = [x0[0][0]]
+    #y_data = [x0[1][0]]
     
-    x = x0.copy()
+    x_data = [[x0[0][0]] for i in range(len(a_gd_list))]
+    y_data = [[x0[1][0]] for i in range(len(a_gd_list))]
     
-    for i in tqdm(range(100)):
+    
+    
+    #x = x0.copy()
+    
+    # for i in tqdm(range(100)):
         
-        x += gradient_descent(a_gd, x)
+    #     x += gradient_descent(a_gd, x)
         
-        x_data.append(x[0][0])
-        y_data.append(x[1][0])
+    #     x_data.append(x[0][0])
+    #     y_data.append(x[1][0])
         
+    #     print(x)
+    
+    i_gd = 0
+        
+    for a_gd in a_gd_list:
+        
+        x = x0.copy()
+        
+        print(a_gd)
         print(x)
         
-    fig = plt.figure()
-    ax  = fig.add_subplot(1,1,1)
+        for i in tqdm(range(100)):
+            
+            x += gradient_descent(a_gd, x)
+            
+            x_data[i_gd].append(x[0][0])
+            y_data[i_gd].append(x[1][0])
+            
+            #print(x)
+            
+        i_gd += 1
+        
+    for j in range(3):
+        print(len(x_data[j]))
+        print(len(y_data[j]))
+        print(x_data[j][0])
+        print(y_data[j][0])
     
-    ax.plot(x_data, y_data)
-    ax.contour(X, Y, Z, 100)
+    fig = plt.figure()
+    ax1  = fig.add_subplot(3,1,1)
+    ax2  = fig.add_subplot(3,1,2)
+    ax3  = fig.add_subplot(3,1,3)
+    
+    ax1.plot(x_data[0], y_data[0])
+    ax2.plot(x_data[1], y_data[1])
+    ax3.plot(x_data[2], y_data[2])
+    
+    ax1.contour(X, Y, Z, 100)
+    ax2.contour(X, Y, Z, 100)
+    ax3.contour(X, Y, Z, 100)
     
     fig.savefig("fig_gd.png")
-        
+    
     
 
     return
