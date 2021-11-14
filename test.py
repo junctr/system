@@ -1,4 +1,6 @@
-from re import A
+import numpy as np
+
+print("test thinkpad")
 
 
 a_gd_list = [0.01, 0.1, 0.5]
