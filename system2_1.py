@@ -39,8 +39,18 @@ def djdx(x):
     
     djdx = np.array([
         [(3*x[0][0] - x[1][0] -2), (x[1][0] - x[0][0])],
-    ])
+    ],dtype = np.float64)
+    
     return djdx
+
+def d2jdx2(x):
+    
+    d2jdx2 = np.array([
+        [3, -1],
+        [-1, 1],
+    ],dtype = np.float64)
+    
+    return d2jdx2
 
 def gradient_descent(a_gd, x):
     
@@ -50,10 +60,18 @@ def gradient_descent(a_gd, x):
     
     return dx
 
+def newton(x):
+    
+    dx = -np.linalg.inv(d2jdx2(x))@djdx(x).T
+    
+    return dx
+
 # def main():
 #     for i in tqdm(range(100000)):
 
 #         time.sleep(0.0001)
+
+
 
 def main():
     
@@ -65,8 +83,11 @@ def main():
     #x_data = [x0[0][0]]
     #y_data = [x0[1][0]]
     
-    x_data = [[x0[0][0]] for i in range(len(a_gd_list))]
-    y_data = [[x0[1][0]] for i in range(len(a_gd_list))]
+    # x_data = [[x0[0][0]] for i in range(len(a_gd_list))]
+    # y_data = [[x0[1][0]] for i in range(len(a_gd_list))]
+    
+    x_data = [[x0[0][0]] for i in range(len(a_gd_list) + 1)]
+    y_data = [[x0[1][0]] for i in range(len(a_gd_list) + 1)]
     
     
     
@@ -100,25 +121,38 @@ def main():
             #print(x)
             
         i_gd += 1
+    
+    x = x0.copy()
+    print("newton")
+    print(x)
+    for i in tqdm(range(100)):
         
-    for j in range(3):
-        print(len(x_data[j]))
-        print(len(y_data[j]))
-        print(x_data[j][0])
-        print(y_data[j][0])
+        x += newton(x)
+        
+        x_data[i_gd].append(x[0][0])
+        y_data[i_gd].append(x[1][0])
+        
+        #print(x)
     
     fig = plt.figure()
-    ax1  = fig.add_subplot(3,1,1)
-    ax2  = fig.add_subplot(3,1,2)
-    ax3  = fig.add_subplot(3,1,3)
+    # ax1  = fig.add_subplot(3,1,1)
+    # ax2  = fig.add_subplot(3,1,2)
+    # ax3  = fig.add_subplot(3,1,3)
     
-    ax1.plot(x_data[0], y_data[0])
-    ax2.plot(x_data[1], y_data[1])
-    ax3.plot(x_data[2], y_data[2])
+    # ax1.plot(x_data[0], y_data[0])
+    # ax2.plot(x_data[1], y_data[1])
+    # ax3.plot(x_data[2], y_data[2])
     
-    ax1.contour(X, Y, Z, 100)
-    ax2.contour(X, Y, Z, 100)
-    ax3.contour(X, Y, Z, 100)
+    # ax1.contour(X, Y, Z, 100)
+    # ax2.contour(X, Y, Z, 100)
+    # ax3.contour(X, Y, Z, 100)
+    
+    ax0 = fig.add_subplot(1,1,1)
+    ax0.plot(x_data[0], y_data[0])
+    ax0.plot(x_data[1], y_data[1])
+    ax0.plot(x_data[2], y_data[2])
+    ax0.plot(x_data[3], y_data[3])
+    ax0.contour(X, Y, Z, 100)
     
     fig.savefig("fig_gd.png")
     
