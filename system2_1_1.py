@@ -111,7 +111,7 @@ def main():
         print(a_gd)
         print(x)
         
-        for i in tqdm(range(100)):
+        for i in tqdm(range(1000)):
             
             x += gradient_descent(a_gd, x)
             

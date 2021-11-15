@@ -15,7 +15,7 @@ x_star = np.array([
 
 x = np.zeros((2,1),dtype = np.float64)
 
-a_gd_list = [0.01, 0.1, 0.5]
+a_gd_list = [0.0001, 0.1, 0.5]
 
 def J(x):
 
@@ -100,7 +100,7 @@ def main():
         print(a_gd)
         print(x)
         
-        for i in tqdm(range(100)):
+        for i in tqdm(range(100000)):
             
             x += gradient_descent(a_gd, x)
             
@@ -137,7 +137,7 @@ def main():
     # ax3.contour(X, Y, Z, 100)
     
     ax0 = fig.add_subplot(1,1,1)
-    # ax0.plot(x_data[0], y_data[0])
+    ax0.plot(x_data[0], y_data[0])
     # ax0.plot(x_data[1], y_data[1])
     # ax0.plot(x_data[2], y_data[2])
     ax0.plot(x_data[3], y_data[3])
