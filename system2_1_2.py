@@ -26,7 +26,7 @@ def J(x):
 def djdx(x):
     
     djdx = np.array([
-        [(3*x[0][0] - x[1][0] -2), (x[1][0] - x[0][0])],
+        [(-400 * x[0][0] * (x[1][0] - x[0][0]**2) - 2 * (1 - x[0][0])), (200 * (x[1][0] - x[0][0]**2))],
     ],dtype = np.float64)
     
     return djdx
@@ -34,8 +34,8 @@ def djdx(x):
 def d2jdx2(x):
     
     d2jdx2 = np.array([
-        [3, -1],
-        [-1, 1],
+        [(-400 * (x[1][0] - x[0][0]**2) + 800 * x[0][0]**2 + 2), (-400 * x[0][0])],
+        [(-400 * x[0][0]), (200)],
     ],dtype = np.float64)
     
     return d2jdx2
@@ -62,11 +62,12 @@ def newton(x):
 
 
 def main():
+    a = 30
     
-    x_j = np.linspace(-5, 5, 1000)
-    y_j = np.linspace(-5, 5, 1000)
+    x_j = np.linspace(-a, a, 1000)
+    y_j = np.linspace(-a, a, 1000)
     X, Y = np.meshgrid(x_j, y_j)
-    Z = 3/2*X**2 + 1/2*Y**2 - X*Y - 2*X
+    Z = 100 * (Y - X**2)**2 + (1 - X)**2
     
     #x_data = [x0[0][0]]
     #y_data = [x0[1][0]]
@@ -136,13 +137,13 @@ def main():
     # ax3.contour(X, Y, Z, 100)
     
     ax0 = fig.add_subplot(1,1,1)
-    ax0.plot(x_data[0], y_data[0])
-    ax0.plot(x_data[1], y_data[1])
-    ax0.plot(x_data[2], y_data[2])
+    # ax0.plot(x_data[0], y_data[0])
+    # ax0.plot(x_data[1], y_data[1])
+    # ax0.plot(x_data[2], y_data[2])
     ax0.plot(x_data[3], y_data[3])
     ax0.contour(X, Y, Z, 100)
     
-    fig.savefig("fig_gd.png")
+    fig.savefig("fig_gd2.png")
     
     
 
