@@ -15,7 +15,7 @@ x_star = np.array([
 
 x = np.zeros((2,1),dtype = np.float64)
 
-a_gd_list = [0.0001, 0.1, 0.5]
+a_gd_list = [0.00005, 0.0001, 0.0002]
 
 def J(x):
 
@@ -54,42 +54,15 @@ def newton(x):
     
     return dx
 
-# def main():
-#     for i in tqdm(range(100000)):
-
-#         time.sleep(0.0001)
-
-
-
 def main():
-    a = 30
     
-    x_j = np.linspace(-a, a, 1000)
-    y_j = np.linspace(-a, a, 1000)
+    x_j = np.linspace(-4.5, 2.5, 1000)
+    y_j = np.linspace(-25, 20, 1000)
     X, Y = np.meshgrid(x_j, y_j)
     Z = 100 * (Y - X**2)**2 + (1 - X)**2
     
-    #x_data = [x0[0][0]]
-    #y_data = [x0[1][0]]
-    
-    # x_data = [[x0[0][0]] for i in range(len(a_gd_list))]
-    # y_data = [[x0[1][0]] for i in range(len(a_gd_list))]
-    
     x_data = [[x0[0][0]] for i in range(len(a_gd_list) + 1)]
     y_data = [[x0[1][0]] for i in range(len(a_gd_list) + 1)]
-    
-    
-    
-    #x = x0.copy()
-    
-    # for i in tqdm(range(100)):
-        
-    #     x += gradient_descent(a_gd, x)
-        
-    #     x_data.append(x[0][0])
-    #     y_data.append(x[1][0])
-        
-    #     print(x)
     
     i_gd = 0
         
@@ -98,22 +71,23 @@ def main():
         x = x0.copy()
         
         print(a_gd)
-        print(x)
         
-        for i in tqdm(range(100000)):
+        for i in tqdm(range(1000000)):
             
             x += gradient_descent(a_gd, x)
             
             x_data[i_gd].append(x[0][0])
             y_data[i_gd].append(x[1][0])
             
-            #print(x)
+            if abs(J(x_star) - J(x)) < 0.00001:
+                
+                break
             
         i_gd += 1
     
     x = x0.copy()
     print("newton")
-    print(x)
+    
     for i in tqdm(range(100)):
         
         x += newton(x)
@@ -121,32 +95,26 @@ def main():
         x_data[i_gd].append(x[0][0])
         y_data[i_gd].append(x[1][0])
         
-        #print(x)
+        if abs(J(x_star) - J(x)) < 0.00001:
+                
+                break
     
     fig = plt.figure()
-    # ax1  = fig.add_subplot(3,1,1)
-    # ax2  = fig.add_subplot(3,1,2)
-    # ax3  = fig.add_subplot(3,1,3)
-    
-    # ax1.plot(x_data[0], y_data[0])
-    # ax2.plot(x_data[1], y_data[1])
-    # ax3.plot(x_data[2], y_data[2])
-    
-    # ax1.contour(X, Y, Z, 100)
-    # ax2.contour(X, Y, Z, 100)
-    # ax3.contour(X, Y, Z, 100)
-    
+        
     ax0 = fig.add_subplot(1,1,1)
-    ax0.plot(x_data[0], y_data[0])
-    # ax0.plot(x_data[1], y_data[1])
-    # ax0.plot(x_data[2], y_data[2])
-    ax0.plot(x_data[3], y_data[3])
+    ax0.plot(x_data[0], y_data[0], marker=".", label="gd(0.00005)")
+    ax0.plot(x_data[1], y_data[1], marker=".", label="gd(0.0001)")
+    ax0.plot(x_data[2], y_data[2], marker=".", label="gd(0.0002)")
+    ax0.plot(x_data[3], y_data[3], marker=".", label="Newton")
     ax0.contour(X, Y, Z, 100)
     
-    fig.savefig("fig_gd2.png")
+    ax0.set_xlabel("$\it{x_{1}}$",fontsize=15)
+    ax0.set_ylabel("$\it{x_{2}}$",fontsize=15)
     
+    ax0.legend()
     
-
+    fig.savefig("fig_2.png")
+        
     return
 
 
