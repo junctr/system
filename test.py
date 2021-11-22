@@ -1,6 +1,6 @@
 import numpy as np
 
-print("test thinkpad ubuntu")
+print("test thinkpad ubuntu2")
 
 
 a_gd_list = [0.01, 0.1, 0.5]
